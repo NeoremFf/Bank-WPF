@@ -16,6 +16,9 @@ namespace BankAppGUI
         {
             InitializeComponent();
 
+            this.Loaded += SetWinStatusActive;
+            this.Closing += SetWinStatusInactive;
+
             mainWin = win;
         }
 
@@ -37,6 +40,16 @@ namespace BankAppGUI
                 mainWin.OpenAccount(AccountType.Ordinary, sum);
             else
                 mainWin.OpenAccount(AccountType.Deposit, sum);
+        }
+
+        private void SetWinStatusActive(object sender, RoutedEventArgs e)
+        {
+            mainWin.OtherActiveWin = this;
+        }
+
+        private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            mainWin.OtherActiveWin = null;
         }
     }
 }

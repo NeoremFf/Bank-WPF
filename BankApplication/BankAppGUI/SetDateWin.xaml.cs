@@ -26,6 +26,9 @@ namespace BankAppGUI
         {
             InitializeComponent();
 
+            this.Loaded += SetWinStatusActive;
+            this.Closing += SetWinStatusInactive;
+
             mainWin = _main;
             date = _date;
         }
@@ -48,6 +51,16 @@ namespace BankAppGUI
             date = date.AddDays(days);
             mainWin.date = date;
             mainWin.UpdateDate();
+        }
+
+        private void SetWinStatusActive(object sender, RoutedEventArgs e)
+        {
+            mainWin.OtherActiveWin = this;
+        }
+
+        private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            mainWin.OtherActiveWin = null;
         }
     }
 }

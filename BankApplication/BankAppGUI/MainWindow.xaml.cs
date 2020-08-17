@@ -10,8 +10,10 @@ namespace BankAppGUI
     public partial class MainWindow : Window
     {
         public DateTime date;
-        private static Bank<Account> bank;
         public int currentAccountId = -1;
+        private static Bank<Account> bank;
+
+        public Window OtherActiveWin { get; set; } = null;
 
         public MainWindow()
         {
@@ -85,30 +87,49 @@ namespace BankAppGUI
 
         private void MenuButton_OpenAccount(object sender, RoutedEventArgs e)
         {
+            if (OtherActiveWin != null)
+                return;
+
             GetTypeOfCreatingAccount getTypeWin = new GetTypeOfCreatingAccount(this);
+            getTypeWin.Owner = this;
             getTypeWin.Show();
         }
 
         private void MenuButton_FindAccountAtId(object sender, RoutedEventArgs e)
         {
+            if (OtherActiveWin != null)
+                return;
+
             FindAccountAtId findWin = new FindAccountAtId(this);
+            findWin.Owner = this;
             findWin.Show();
         }
 
         private void AccountMenu_Put(object sender, RoutedEventArgs e)
         {
+            if (OtherActiveWin != null)
+                return;
+
             MoneyTransactionWin transactionWin = new MoneyTransactionWin(this, TransactionType.Put);
+            transactionWin.Owner = this;
             transactionWin.Show();
         }
 
         private void AccountMenu_Withdraw(object sender, RoutedEventArgs e)
         {
+            if (OtherActiveWin != null)
+                return;
+
             MoneyTransactionWin transactionWin = new MoneyTransactionWin(this, TransactionType.Withdraw);
+            transactionWin.Owner = this;
             transactionWin.Show();
         }
 
         private void AccountMenu_CloseAccount(object sender, RoutedEventArgs e)
         {
+            if (OtherActiveWin != null)
+                return;
+
             if (currentAccountId == -1) throw new Exception("Error of account id");
 
             bank.Close(currentAccountId);
@@ -118,7 +139,11 @@ namespace BankAppGUI
 
         private void SetDAte(object sender, RoutedEventArgs e)
         {
+            if (OtherActiveWin != null)
+                return;
+
             SetDateWin dateWin = new SetDateWin(this, date);
+            dateWin.Owner = this;
             dateWin.Show();
         }
 

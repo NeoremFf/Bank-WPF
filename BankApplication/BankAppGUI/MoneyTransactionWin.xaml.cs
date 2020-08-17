@@ -32,6 +32,9 @@ namespace BankAppGUI
         {
             InitializeComponent();
 
+            this.Loaded += SetWinStatusActive;
+            this.Closing += SetWinStatusInactive;
+
             mainWin = _mainWin;
             type = _type;
 
@@ -70,6 +73,16 @@ namespace BankAppGUI
                 }
                 this.Close();
             }
+        }
+
+        private void SetWinStatusActive(object sender, RoutedEventArgs e)
+        {
+            mainWin.OtherActiveWin = this;
+        }
+
+        private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            mainWin.OtherActiveWin = null;
         }
     }
 }
