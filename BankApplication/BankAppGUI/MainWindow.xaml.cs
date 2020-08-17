@@ -9,8 +9,9 @@ namespace BankAppGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public DateTime date;
         private static Bank<Account> bank;
-        DateTime date;
+        public int currentAccountId = -1;
 
         public MainWindow()
         {
@@ -18,11 +19,28 @@ namespace BankAppGUI
 
             bank = new Bank<Account>("GoldBank");
             date = DateTime.Now;
+            bank._date = date;
 
             textBlockBankName.Text = bank.Name;
-            CurrentDateUI.Text = date.ToString("d");
+            UpdateDate();
 
             UpdateAccountInfoUI();
+        }
+
+        public void UpdateDate()
+        {
+            textBlock_CurrentDate.Text = date.ToString("d");
+            bank._date = date;
+
+            // check persents status
+            foreach (var item in bank)
+            {
+                DepositAccount dep = item as DepositAccount;
+                if (dep != null) dep.Calculate(date);
+            }
+
+            if (currentAccountId != -1)
+                UpdateAccountInfoUI(bank.FindAccount(currentAccountId));
         }
 
         public void OpenAccount(AccountType type, decimal sum)
@@ -32,8 +50,25 @@ namespace BankAppGUI
                 ShowInfo,
                 ShowInfo,
                 ShowInfo,
-                ShowInfo,
                 ShowInfo);
+        }
+
+        public void TransactionOnAccount_Put(decimal sum)
+        {
+            if (currentAccountId == -1) throw new Exception("Error of account id");
+
+            Account acc = bank.FindAccount(currentAccountId);
+            acc.Put(sum);
+            UpdateAccountInfoUI(acc);
+        }
+
+        public void TransactionOnAccount_Withdraw(decimal sum)
+        {
+            if (currentAccountId == -1) throw new Exception("Error of account id");
+
+            Account acc = bank.FindAccount(currentAccountId);
+            acc.Withdraw(sum);
+            UpdateAccountInfoUI(acc);
         }
 
         public void GetAccountInfo(int id)
@@ -44,7 +79,8 @@ namespace BankAppGUI
                 MessageBox.Show("Счета с данным id нет.");
                 return;
             }
-            UpdateAccountInfoUI(acc.Id.ToString(), acc.type.ToString(), acc.Sum.ToString(), "0");
+            currentAccountId = id;
+            UpdateAccountInfoUI(acc);
         }
 
         private void MenuButton_OpenAccount(object sender, RoutedEventArgs e)
@@ -59,22 +95,74 @@ namespace BankAppGUI
             findWin.Show();
         }
 
+        private void AccountMenu_Put(object sender, RoutedEventArgs e)
+        {
+            MoneyTransactionWin transactionWin = new MoneyTransactionWin(this, TransactionType.Put);
+            transactionWin.Show();
+        }
+
+        private void AccountMenu_Withdraw(object sender, RoutedEventArgs e)
+        {
+            MoneyTransactionWin transactionWin = new MoneyTransactionWin(this, TransactionType.Withdraw);
+            transactionWin.Show();
+        }
+
+        private void AccountMenu_CloseAccount(object sender, RoutedEventArgs e)
+        {
+            if (currentAccountId == -1) throw new Exception("Error of account id");
+
+            bank.Close(currentAccountId);
+            currentAccountId = -1;
+            UpdateAccountInfoUI();
+        }
+
+        private void SetDAte(object sender, RoutedEventArgs e)
+        {
+            SetDateWin dateWin = new SetDateWin(this, date);
+            dateWin.Show();
+        }
+
         private static void ShowInfo(object sender, AccountEventArgs e)
         {
             MessageBox.Show(e.Message);
         }
 
-        private void UpdateAccountInfoUI(string name = "***", string type = "***", string value = "***", string days = "***")
+        private void UpdateAccountInfoUI(Account acc = null)
         {
-            textBlock_name.Text = $"Счет #{name}";
-            textBlock_type.Text = type;
-            textBlock_value.Text = value;
-            textBlock_daysLeft.Text = days;
+            if (currentAccountId == -1 || acc == null)
+            {
+                string emptyAcc = "***";
+                textBlock_name.Text = emptyAcc;
+                textBlock_type.Text = emptyAcc;
+                textBlock_value.Text = emptyAcc;
+                textBlock_daysLeft.Text = emptyAcc;
 
-            if (textBlock_name.Text == "***")
                 buttonsManagersAccount.Visibility = Visibility.Hidden;
+            }
             else
+            {
+                textBlock_name.Text = $"Счет #{acc.Id}";
+                
+                if (acc is DepositAccount depAcc)
+                {
+                    textBlock_type.Text = "Депозит";
+                    textBlock_value.Text = $"{acc.Sum:#.##} ( +{depAcc.SumPersent:#.##} )";
+
+                    textBlock_daysLeft_Title.Visibility = Visibility.Visible;
+                    textBlock_daysLeft.Visibility = Visibility.Visible;
+                    textBlock_daysLeft.Text = depAcc.GetDaysLeftToCalculate(date).ToString();
+                }
+                else
+                {
+                    textBlock_type.Text = "Расчетный";
+                    textBlock_value.Text = acc.Sum.ToString();
+
+                    textBlock_daysLeft_Title.Visibility = Visibility.Hidden;
+                    textBlock_daysLeft.Visibility = Visibility.Hidden;
+                }
+
                 buttonsManagersAccount.Visibility = Visibility.Visible;
+            }
         }
     }
 }

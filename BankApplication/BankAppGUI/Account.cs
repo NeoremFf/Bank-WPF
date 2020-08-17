@@ -15,11 +15,8 @@ namespace BankLib
         protected internal event AccountStateHandler Opened;
         // Событие возникающее при закрытии счета
         protected internal event AccountStateHandler Closed;
-        // Событие возникающее при начислении процентов
-        protected internal event AccountStateHandler Calculated;
 
         static int counter = 0;
-        public DateTime dateOpen { get; private set; }
 
         public Account(decimal sum, float percentage, AccountType _type)
         {
@@ -27,7 +24,6 @@ namespace BankLib
             Percentage = percentage;
             Id = ++counter;
             type = _type;
-            dateOpen = DateTime.Now;
         }
 
         // Текущая сумма на счету
@@ -62,10 +58,6 @@ namespace BankLib
         protected virtual void OnClosed(AccountEventArgs e)
         {
             CallEvent(e, Closed);
-        }
-        protected virtual void OnCalculated(AccountEventArgs e)
-        {
-            CallEvent(e, Calculated);
         }
 
         public virtual void Put(decimal sum)
@@ -104,12 +96,11 @@ namespace BankLib
         }
 
         // начисление процентов
-        public virtual void Calculate(DateTime date)
+        public virtual decimal Calculate(DateTime currentDate)
         {
             decimal increment = Sum * (decimal)Percentage / 100;
             Sum += increment;
-            OnCalculated(new AccountEventArgs($"Начислены проценты в размере: {increment}", increment));
-            dateOpen = date;
+            return increment;
         }
     }
 }

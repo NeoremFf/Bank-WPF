@@ -15,8 +15,9 @@ namespace BankLib
     public class Bank<T> : IEnumerable
         where T : Account
     {
-        T[] accounts;
+        private T[] accounts;
 
+        public DateTime _date { get; set; }
         public string Name { get; private set; }
 
         public Bank(string name)
@@ -27,7 +28,7 @@ namespace BankLib
         // метод создания счета
         public void Open(AccountType accountType, decimal sum,
             AccountStateHandler addSumHandler, AccountStateHandler withdrawSumHandler,
-            AccountStateHandler calculationHandler, AccountStateHandler closeAccountHandler,
+            AccountStateHandler closeAccountHandler,
             AccountStateHandler openAccountHandler)
         {
             T newAccount = null;
@@ -39,7 +40,7 @@ namespace BankLib
                     newAccount = new DemandAccount(sum, 0, AccountType.Ordinary) as T;
                     break;
                 case AccountType.Deposit:
-                    newAccount = new DepositAccount(sum, 12, AccountType.Deposit) as T;
+                    newAccount = new DepositAccount(sum, 12, AccountType.Deposit, _date) as T;
                     break;
             }
 
@@ -61,7 +62,6 @@ namespace BankLib
             newAccount.Withdrawed += withdrawSumHandler;
             newAccount.Closed += closeAccountHandler;
             newAccount.Opened += openAccountHandler;
-            newAccount.Calculated += calculationHandler;
 
             newAccount.Open();
         }

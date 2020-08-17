@@ -19,7 +19,18 @@ namespace BankAppGUI
 
         private void GetId(object sender, RoutedEventArgs e)
         {
-            int id = Convert.ToInt32(textBoxIdAccount.Text);
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(textBoxIdAccount.Text);
+            }
+            catch (Exception)
+            {
+                this.Close();
+                MessageBox.Show("Введен некорректный формат.");
+                return;
+            }
+            this.Close();
             mainWin.GetAccountInfo(id);
         }
     }

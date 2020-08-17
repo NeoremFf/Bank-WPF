@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankAppGUI\App.xaml
-3-915014964
+5-1158620690
 
-13-1079435061
+15415270992
 13152784993
-FindAccountAtId.xaml;GetTypeOfCreatingAccount.xaml;MainWindow.xaml;
+FindAccountAtId.xaml;GetTypeOfCreatingAccount.xaml;MainWindow.xaml;MoneyTransactionWin.xaml;SetDateWin.xaml;
 
 False
 
