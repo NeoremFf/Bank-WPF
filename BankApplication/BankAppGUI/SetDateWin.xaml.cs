@@ -16,6 +16,7 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for SetDateWin.xaml
+    /// Добавление N дней к текущей дате
     /// </summary>
     public partial class SetDateWin : Window
     {

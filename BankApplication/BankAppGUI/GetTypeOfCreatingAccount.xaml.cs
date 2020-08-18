@@ -7,6 +7,7 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for GetTypeOfCreatingAccount.xaml
+    /// Создание счета: получение типа и начальной суммы
     /// </summary>
     public partial class GetTypeOfCreatingAccount : Window
     {

@@ -6,10 +6,10 @@ namespace BankLib
 {
     public class DepositAccount : Account
     {
-        public DateTime dateOpen { get; private set; }
-        public DateTime dateToCalculate { get; private set; }
+        public DateTime dateOpen { get; private set; } // дата начала 30-ти дневного периода
+        public DateTime dateToCalculate { get; private set; } // дата конца 30-ти дневного периода
 
-        public decimal SumPersent = 0.0m;
+        public decimal SumPersent = 0.0m; // сумма денег, которые были начисленны процентами за всё время существования счета
 
         public DepositAccount(decimal sum, float percentage, AccountType _type, DateTime _date) : base(sum, percentage, _type)
         {
@@ -17,6 +17,7 @@ namespace BankLib
             dateToCalculate = dateOpen.AddDays(30);
         }
 
+        // к-во оставшихся дней до начисления процентов
         public int GetDaysLeftToCalculate(DateTime currentDate) => (int)(dateToCalculate - currentDate).TotalDays;
 
         protected internal override void Open()
@@ -43,6 +44,7 @@ namespace BankLib
             return sumWithdraw;
         }
 
+        // расчет процентов
         public override decimal Calculate(DateTime currentDate)
         { 
             if (currentDate >= dateToCalculate)

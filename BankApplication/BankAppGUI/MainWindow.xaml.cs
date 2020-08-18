@@ -6,6 +6,7 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Основной интерфейс
     /// </summary>
     public partial class MainWindow : Window
     {

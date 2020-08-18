@@ -5,6 +5,7 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for FindAccountAtId.xaml
+    /// Получение Id для поиска счета 
     /// </summary>
     public partial class FindAccountAtId : Window
     {

@@ -42,7 +42,6 @@ namespace BankLib
                 handler?.Invoke(this, e);
         }
 
-        // вызов отдельных событий. Для каждого события определяется свой витуальный метод
         protected virtual void OnOpened(AccountEventArgs e)
         {
             CallEvent(e, Opened);
