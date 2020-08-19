@@ -70,22 +70,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Account.cs" />
-    <Compile Include="AccountStateHandler.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bank.cs" />
-    <Compile Include="DemandAccount.cs" />
-    <Compile Include="DepositAccount.cs" />
     <Compile Include="FindAccountAtId.xaml.cs">
       <DependentUpon>FindAccountAtId.xaml</DependentUpon>
     </Compile>
     <Compile Include="GetTypeOfCreatingAccount.xaml.cs">
       <DependentUpon>GetTypeOfCreatingAccount.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IAccount.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -127,6 +121,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BankManagerLib\BankLib.csproj">
+      <Project>{4e30594b-dc8b-4f54-8163-4542fc4a3010}</Project>
+      <Name>BankLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataManager\DataManager.csproj">
+      <Project>{3ba8a810-d1d8-4f07-ac37-e1d939e090b1}</Project>
+      <Name>DataManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

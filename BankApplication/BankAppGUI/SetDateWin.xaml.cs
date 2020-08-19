@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for SetDateWin.xaml
-    /// Добавление N дней к текущей дате
+    /// Add N days to current date
     /// </summary>
     public partial class SetDateWin : Window
     {
@@ -34,6 +23,7 @@ namespace BankAppGUI
             date = _date;
         }
 
+        // Get count of days from window text box
         private void SetDaysAdd(object sender, RoutedEventArgs e)
         {
             int days = 0;
@@ -54,11 +44,13 @@ namespace BankAppGUI
             mainWin.UpdateDate();
         }
 
+        // -----------------------------------------------------------------------
+        // Update state of current active window
+        // -----------------------------------------------------------------------
         private void SetWinStatusActive(object sender, RoutedEventArgs e)
         {
             mainWin.OtherActiveWin = this;
         }
-
         private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mainWin.OtherActiveWin = null;

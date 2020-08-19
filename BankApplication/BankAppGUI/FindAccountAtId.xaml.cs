@@ -5,7 +5,7 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for FindAccountAtId.xaml
-    /// Получение Id для поиска счета 
+    /// Get id for find account with this
     /// </summary>
     public partial class FindAccountAtId : Window
     {
@@ -21,6 +21,7 @@ namespace BankAppGUI
             mainWin = _mainWin;
         }
 
+        // Get id from window text box
         private void GetId(object sender, RoutedEventArgs e)
         {
             int id = 0;
@@ -38,11 +39,13 @@ namespace BankAppGUI
             mainWin.GetAccountInfo(id);
         }
 
+        // -----------------------------------------------------------------------
+        // Update state of current active window
+        // -----------------------------------------------------------------------
         private void SetWinStatusActive(object sender, RoutedEventArgs e)
         {
             mainWin.OtherActiveWin = this;
         }
-
         private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mainWin.OtherActiveWin = null;

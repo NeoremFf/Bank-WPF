@@ -6,15 +6,15 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
-    /// Основной интерфейс
+    /// Main windon
     /// </summary>
     public partial class MainWindow : Window
     {
-        public DateTime date;
-        public int currentAccountId = -1;
+        public DateTime date; // current date
+        public int currentAccountId = -1; // id of the current account in the bank about which information was received
         private static Bank<Account> bank;
 
-        public Window OtherActiveWin { get; set; } = null;
+        public Window OtherActiveWin { get; set; } = null; // ref to current opened window
 
         public MainWindow()
         {
@@ -86,6 +86,9 @@ namespace BankAppGUI
             UpdateAccountInfoUI(acc);
         }
 
+        // -----------------------------------------------------------------------
+        // Functions that call in main window
+        // -----------------------------------------------------------------------
         private void MenuButton_OpenAccount(object sender, RoutedEventArgs e)
         {
             if (OtherActiveWin != null)
@@ -148,11 +151,18 @@ namespace BankAppGUI
             dateWin.Show();
         }
 
+
+        // -----------------------------------------------------------------------
+        // Show info about current account on window GUI
+        // -----------------------------------------------------------------------
         private static void ShowInfo(object sender, AccountEventArgs e)
         {
             MessageBox.Show(e.Message);
         }
 
+        // -----------------------------------------------------------------------
+        // Update info about current account
+        // -----------------------------------------------------------------------
         private void UpdateAccountInfoUI(Account acc = null)
         {
             if (currentAccountId == -1 || acc == null)

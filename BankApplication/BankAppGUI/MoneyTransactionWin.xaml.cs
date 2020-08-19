@@ -11,7 +11,7 @@ namespace BankAppGUI
 
     /// <summary>
     /// Interaction logic for MoneyTransactionWin.xaml
-    /// Получение суммы для транзакции, тип транзакции
+    /// Get sum and make transaction
     /// </summary>
     public partial class MoneyTransactionWin : Window
     {
@@ -39,6 +39,7 @@ namespace BankAppGUI
             }
         }
 
+        // Get sum from window text box
         private void Button_Transaction(object sender, RoutedEventArgs e)
         {
             decimal sum = 0;
@@ -65,11 +66,13 @@ namespace BankAppGUI
             }
         }
 
+        // -----------------------------------------------------------------------
+        // Update state of current active window
+        // -----------------------------------------------------------------------
         private void SetWinStatusActive(object sender, RoutedEventArgs e)
         {
             mainWin.OtherActiveWin = this;
         }
-
         private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mainWin.OtherActiveWin = null;

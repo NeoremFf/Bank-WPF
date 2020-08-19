@@ -7,7 +7,7 @@ namespace BankAppGUI
 {
     /// <summary>
     /// Interaction logic for GetTypeOfCreatingAccount.xaml
-    /// Создание счета: получение типа и начальной суммы
+    /// Create account | Get type of account and start sum
     /// </summary>
     public partial class GetTypeOfCreatingAccount : Window
     {
@@ -23,6 +23,8 @@ namespace BankAppGUI
             mainWin = win;
         }
 
+        // Get summ from window text box
+        // then create an account with type that choose from window radio button
         private void GetTypeOfAccount(object sender, RoutedEventArgs e)
         {
             decimal sum = 0;
@@ -43,11 +45,13 @@ namespace BankAppGUI
                 mainWin.OpenAccount(AccountType.Deposit, sum);
         }
 
+        // -----------------------------------------------------------------------
+        // Update state of current active window
+        // -----------------------------------------------------------------------
         private void SetWinStatusActive(object sender, RoutedEventArgs e)
         {
             mainWin.OtherActiveWin = this;
         }
-
         private void SetWinStatusInactive(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mainWin.OtherActiveWin = null;
