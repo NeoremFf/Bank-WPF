@@ -28,7 +28,7 @@ namespace BankAppGUI
                 ShowInfo,
                 ShowInfo,
                 ShowInfo);
-            bank.SetHandlers(SaveToDatabase, RemoveFromDatabase);
+            bank.SetHandlers(SaveToDatabase, RemoveFromDatabase, UpdateDataInDatabase);
             date = DateTime.Now;
             bank._date = date;
 
@@ -214,6 +214,8 @@ namespace BankAppGUI
         // -----------------------------------------------------------------------
         // Database
         // -----------------------------------------------------------------------
+
+        // Save to
         private void SaveToDatabase(Account acc)
         {
             using (MyDbContext db = new MyDbContext())
@@ -229,6 +231,8 @@ namespace BankAppGUI
                 db.SaveChanges();
             }
         }
+
+        // Remove from
         private void RemoveFromDatabase(Account acc)
         {
             using (MyDbContext db = new MyDbContext())
@@ -238,6 +242,21 @@ namespace BankAppGUI
                 db.SaveChanges();
             }
         }
+
+        // Update data
+        private void UpdateDataInDatabase(Account acc)
+        {
+            using (MyDbContext db = new MyDbContext())
+            {
+                var item = db.AccountsData.Where(t => t.AccountId == acc.Id).First();
+                item.Sum = acc.Sum;
+                if (acc is DepositAccount dep)
+                    item.Date = dep.dateOpen;
+                db.SaveChanges();
+            }
+        }
+
+        // Read all data from database and add it to bank
         private List<Account> ReadFromDatabase()
         {
             List<Account> accounts = new List<Account>();

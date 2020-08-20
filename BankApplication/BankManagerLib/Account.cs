@@ -17,6 +17,7 @@ namespace BankLib
 
         protected internal event AccountdHandler OpenedNewAccEvent;
         protected internal event AccountdHandler CloseAccEvent;
+        protected internal event AccountdHandler UpdateValueAccEvent;
 
         static public int Counter = 0; // for set new id
 
@@ -54,10 +55,12 @@ namespace BankLib
         protected virtual void OnWithdrawed(AccountEventArgs e)
         {
             CallEvent(e, Withdrawed);
+            UpdateValueAccEvent?.Invoke(this);
         }
         protected virtual void OnAdded(AccountEventArgs e)
         {
             CallEvent(e, Added);
+            UpdateValueAccEvent?.Invoke(this);
         }
         protected virtual void OnClosed(AccountEventArgs e)
         {
@@ -110,6 +113,7 @@ namespace BankLib
         {
             decimal increment = Sum * (decimal)Percentage / 100;
             Sum += increment;
+            UpdateValueAccEvent?.Invoke(this);
             return increment;
         }
     }

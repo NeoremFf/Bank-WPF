@@ -29,6 +29,7 @@ namespace BankLib
         private AccountStateHandler Opened;
         private AccountdHandler OpenedNewAccEvent;
         private AccountdHandler CloseAccEvent;
+        private AccountdHandler UpdateValueAccEvent;
 
         public Bank(string name, AccountStateHandler addSumHandler, AccountStateHandler withdrawSumHandler,
             AccountStateHandler closeAccountHandler,
@@ -41,10 +42,11 @@ namespace BankLib
             Opened += openAccountHandler;
         }
 
-        public void SetHandlers(AccountdHandler open_handler, AccountdHandler delete_handler)
+        public void SetHandlers(AccountdHandler open_handler, AccountdHandler delete_handler, AccountdHandler update_handler)
         {
             OpenedNewAccEvent += open_handler;
             CloseAccEvent += delete_handler;
+            UpdateValueAccEvent += update_handler;
         }
 
         // -----------------------------------------
@@ -87,6 +89,7 @@ namespace BankLib
             newAccount.Opened += Opened;
             newAccount.OpenedNewAccEvent += OpenedNewAccEvent;
             newAccount.CloseAccEvent += CloseAccEvent;
+            newAccount.UpdateValueAccEvent += UpdateValueAccEvent;
 
             newAccount.Open();
         }
@@ -111,6 +114,7 @@ namespace BankLib
             newAccount.Opened += Opened;
             newAccount.OpenedNewAccEvent += OpenedNewAccEvent;
             newAccount.CloseAccEvent += CloseAccEvent;
+            newAccount.UpdateValueAccEvent += UpdateValueAccEvent;
         }
 
         // add sum to account
