@@ -4,20 +4,22 @@ using System.Text;
 
 namespace BankLib
 {
+    /// <summary>
+    /// Account with percentage
+    /// </summary>
     public class DepositAccount : Account
     {
-        public DateTime dateOpen { get; private set; } // дата начала 30-ти дневного периода
-        public DateTime dateToCalculate { get; private set; } // дата конца 30-ти дневного периода
+        public DateTime dateOpen { get; private set; } // the date of 30-days period starts
+        public DateTime dateToCalculate { get; private set; } // the date of 30-days period ends
+        public decimal SumPersent = 0.0m; // money that was getting from percentage
 
-        public decimal SumPersent = 0.0m; // сумма денег, которые были начисленны процентами за всё время существования счета
-
-        public DepositAccount(decimal sum, float percentage, AccountType _type, DateTime _date) : base(sum, percentage, _type)
+        public DepositAccount(decimal sum, float percentage, AccountType _type, DateTime _date, int id = 0) : base(sum, percentage, _type, id)
         {
             dateOpen = _date;
             dateToCalculate = dateOpen.AddDays(30);
         }
 
-        // к-во оставшихся дней до начисления процентов
+        // count of days that left to calculate percentage
         public int GetDaysLeftToCalculate(DateTime currentDate) => (int)(dateToCalculate - currentDate).TotalDays;
 
         protected internal override void Open()
@@ -29,7 +31,7 @@ namespace BankLib
         {
             base.Put(sum);
             SumPersent = 0.0m;
-            // если бы это был реальный банк, а не симуляция, то и дни шли бы реально
+            // if it was a real bank -> date was correctly
             dateOpen = DateTime.Now; 
             dateToCalculate = dateOpen.AddDays(30);
         }
@@ -38,13 +40,13 @@ namespace BankLib
         {
             decimal sumWithdraw = base.Withdraw(sum);
             SumPersent = 0.0m;
-            // если бы это был реальный банк, а не симуляция, то и дни шли бы реально
+            // if it was a real bank -> date was correctly
             dateOpen = DateTime.Now; 
             dateToCalculate = dateOpen.AddDays(30);
             return sumWithdraw;
         }
 
-        // расчет процентов
+        // Calculate percentage
         public override decimal Calculate(DateTime currentDate)
         { 
             if (currentDate >= dateToCalculate)

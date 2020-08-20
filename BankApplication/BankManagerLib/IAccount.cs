@@ -4,10 +4,10 @@ namespace BankLib
 {
     public interface IAccount
     {
-        // Положить деньги на счёт
+        // Add money to account
         void Put(decimal sum);
 
-        // Снять деньги с счёта
+        // Withdraw money from account
         decimal Withdraw(decimal sum);
     }
 }

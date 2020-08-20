@@ -1,0 +1,9 @@
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\bin\Debug\netstandard2.0\DataManager.deps.json
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\bin\Debug\netstandard2.0\DataManager.dll
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\obj\Debug\netstandard2.0\DataManager.csprojAssemblyReference.cache
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\obj\Debug\netstandard2.0\DataManager.AssemblyInfoInputs.cache
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\obj\Debug\netstandard2.0\DataManager.AssemblyInfo.cs
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\bin\Debug\netstandard2.0\DataManager.pdb
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\obj\Debug\netstandard2.0\DataManager.csproj.CoreCompileInputs.cache
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\obj\Debug\netstandard2.0\DataManager.dll
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\DataManager\obj\Debug\netstandard2.0\DataManager.pdb

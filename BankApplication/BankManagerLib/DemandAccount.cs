@@ -4,9 +4,12 @@ using System.Text;
 
 namespace BankLib
 {
+    /// <summary>
+    /// Simple account without percentage
+    /// </summary>
     public class DemandAccount : Account
     {
-        public DemandAccount(decimal sum, float percentage, AccountType _type) : base(sum, percentage, _type)
+        public DemandAccount(decimal sum, float percentage, AccountType _type, int id = 0) : base(sum, percentage, _type, id)
         {
         }
 

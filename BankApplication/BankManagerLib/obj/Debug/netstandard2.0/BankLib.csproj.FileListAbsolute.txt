@@ -1,0 +1,9 @@
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\bin\Debug\netstandard2.0\BankLib.deps.json
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\bin\Debug\netstandard2.0\BankLib.dll
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\bin\Debug\netstandard2.0\BankLib.pdb
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\obj\Debug\netstandard2.0\BankLib.csprojAssemblyReference.cache
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\obj\Debug\netstandard2.0\BankLib.AssemblyInfoInputs.cache
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\obj\Debug\netstandard2.0\BankLib.AssemblyInfo.cs
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\obj\Debug\netstandard2.0\BankLib.csproj.CoreCompileInputs.cache
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\obj\Debug\netstandard2.0\BankLib.dll
+D:\Projects\Study\WPF\Bank-WPF\BankApplication\BankManagerLib\obj\Debug\netstandard2.0\BankLib.pdb

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using BankLib;
 
 namespace BankAppGUI
@@ -20,9 +23,20 @@ namespace BankAppGUI
         {
             InitializeComponent();
 
-            bank = new Bank<Account>("GoldBank");
+            bank = new Bank<Account>("GoldBank", 
+                ShowInfo,
+                ShowInfo,
+                ShowInfo,
+                ShowInfo);
+            bank.SetHandlers(SaveToDatabase, RemoveFromDatabase);
             date = DateTime.Now;
             bank._date = date;
+
+            // Update data from database if it is
+            var accountsData = ReadFromDatabase();
+            if (accountsData.Count != 0)
+                foreach (var item in accountsData)
+                    bank.Open(item);
 
             textBlockBankName.Text = bank.Name;
             UpdateDate();
@@ -48,12 +62,7 @@ namespace BankAppGUI
 
         public void OpenAccount(AccountType type, decimal sum)
         {
-            bank.Open(type,
-                sum,
-                ShowInfo,
-                ShowInfo,
-                ShowInfo,
-                ShowInfo);
+            bank.Open(type, sum);
         }
 
         public void TransactionOnAccount_Put(decimal sum)
@@ -199,6 +208,62 @@ namespace BankAppGUI
 
                 buttonsManagersAccount.Visibility = Visibility.Visible;
             }
+        }
+
+
+        // -----------------------------------------------------------------------
+        // Database
+        // -----------------------------------------------------------------------
+        private void SaveToDatabase(Account acc)
+        {
+            using (MyDbContext db = new MyDbContext())
+            {
+                DateTime? _date = null;
+                if (acc.type == AccountType.Deposit)
+                {
+                    DepositAccount _dep = acc as DepositAccount;
+                    _date = _dep.dateOpen;
+                }
+                var dataAcc = new AccountData() { AccountId = acc.Id, Type = acc .type.ToString(), Sum = acc.Sum, Date = _date };
+                db.AccountsData.Add(dataAcc);
+                db.SaveChanges();
+            }
+        }
+        private void RemoveFromDatabase(Account acc)
+        {
+            using (MyDbContext db = new MyDbContext())
+            {
+                var item = db.AccountsData.Where(t => t.AccountId == acc.Id).First();
+                db.AccountsData.Remove(item);
+                db.SaveChanges();
+            }
+        }
+        private List<Account> ReadFromDatabase()
+        {
+            List<Account> accounts = new List<Account>();
+            using (MyDbContext db = new MyDbContext())
+            {
+                foreach (var item in db.AccountsData)
+                {
+                    Account acc;
+                    if (item.Type == "Deposit")
+                    {
+                        int id = item.AccountId;
+                        float pers = Bank<Account>.DEPOSIT_PERCENTAGE;
+                        AccountType type = AccountType.Deposit;
+                        acc = new DepositAccount(item.Sum, pers, type, (DateTime)item.Date, id) as Account;
+                    }
+                    else
+                    {
+                        int id = item.AccountId;
+                        float pers = 0;
+                        AccountType type = AccountType.Ordinary;
+                        acc = new DemandAccount(item.Sum, pers, type, id) as Account;
+                    }
+                    if (acc != null) accounts.Add(acc);
+                }
+            }
+            return accounts;
         }
     }
 }

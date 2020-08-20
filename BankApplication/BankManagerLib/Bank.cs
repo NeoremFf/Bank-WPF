@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BankLib
 {
-    // тип счета
+    // type of account
     public enum AccountType
     {
         Ordinary,
@@ -15,21 +15,44 @@ namespace BankLib
     public class Bank<T> : IEnumerable
         where T : Account
     {
-        private T[] accounts;
+        private T[] accounts; // all accouns in bank
+
+        public const float DEPOSIT_PERCENTAGE = 12;
 
         public DateTime _date { get; set; }
         public string Name { get; private set; }
 
-        public Bank(string name)
-        {
-            this.Name = name;
-        }
+        // main handlers for accounts
+        private AccountStateHandler Added;
+        private AccountStateHandler Withdrawed;
+        private AccountStateHandler Closed;
+        private AccountStateHandler Opened;
+        private AccountdHandler OpenedNewAccEvent;
+        private AccountdHandler CloseAccEvent;
 
-        // метод создания счета
-        public void Open(AccountType accountType, decimal sum,
-            AccountStateHandler addSumHandler, AccountStateHandler withdrawSumHandler,
+        public Bank(string name, AccountStateHandler addSumHandler, AccountStateHandler withdrawSumHandler,
             AccountStateHandler closeAccountHandler,
             AccountStateHandler openAccountHandler)
+        {
+            this.Name = name;
+            Added += addSumHandler;
+            Withdrawed += withdrawSumHandler;
+            Closed += closeAccountHandler;
+            Opened += openAccountHandler;
+        }
+
+        public void SetHandlers(AccountdHandler open_handler, AccountdHandler delete_handler)
+        {
+            OpenedNewAccEvent += open_handler;
+            CloseAccEvent += delete_handler;
+        }
+
+        // -----------------------------------------
+        // create account
+        // -----------------------------------------
+        
+        // with type and start sum
+        public void Open(AccountType accountType, decimal sum)
         {
             T newAccount = null;
 
@@ -40,7 +63,7 @@ namespace BankLib
                     newAccount = new DemandAccount(sum, 0, AccountType.Ordinary) as T;
                     break;
                 case AccountType.Deposit:
-                    newAccount = new DepositAccount(sum, 12, AccountType.Deposit, _date) as T;
+                    newAccount = new DepositAccount(sum, DEPOSIT_PERCENTAGE, AccountType.Deposit, _date) as T;
                     break;
             }
 
@@ -57,16 +80,40 @@ namespace BankLib
                 tempAccounts[tempAccounts.Length - 1] = newAccount;
                 accounts = tempAccounts;
             }
-            // установка обработчиков событий счета
-            newAccount.Added += addSumHandler;
-            newAccount.Withdrawed += withdrawSumHandler;
-            newAccount.Closed += closeAccountHandler;
-            newAccount.Opened += openAccountHandler;
+
+            newAccount.Added += Added;
+            newAccount.Withdrawed += Withdrawed;
+            newAccount.Closed += Closed;
+            newAccount.Opened += Opened;
+            newAccount.OpenedNewAccEvent += OpenedNewAccEvent;
+            newAccount.CloseAccEvent += CloseAccEvent;
 
             newAccount.Open();
         }
 
-        //добавление средств на счет
+        // with existing  account
+        public void Open(T newAccount)
+        {
+            if (accounts == null)
+                accounts = new T[] { newAccount };
+            else
+            {
+                T[] tempAccounts = new T[accounts.Length + 1];
+                for (int i = 0; i < accounts.Length; i++)
+                    tempAccounts[i] = accounts[i];
+                tempAccounts[tempAccounts.Length - 1] = newAccount;
+                accounts = tempAccounts;
+            }
+
+            newAccount.Added += Added;
+            newAccount.Withdrawed += Withdrawed;
+            newAccount.Closed += Closed;
+            newAccount.Opened += Opened;
+            newAccount.OpenedNewAccEvent += OpenedNewAccEvent;
+            newAccount.CloseAccEvent += CloseAccEvent;
+        }
+
+        // add sum to account
         public void Put(decimal sum, int id)
         {
             T account = FindAccount(id);
@@ -75,7 +122,7 @@ namespace BankLib
             account.Put(sum);
         }
 
-        // вывод средств
+        // Withdraw sum from account
         public void Withdraw(decimal sum, int id)
         {
             T account = FindAccount(id);
@@ -84,7 +131,7 @@ namespace BankLib
             account.Withdraw(sum);
         }
 
-        // закрытие счета
+        // close account
         public void Close(int id)
         {
             int index;
@@ -109,7 +156,7 @@ namespace BankLib
             }
         }
 
-        // поиск счета по id
+        // find account by id
         public T FindAccount(int id)
         {
             if (accounts == null)
@@ -121,7 +168,6 @@ namespace BankLib
             }
             return null;
         }
-        // перегруженная версия поиска счета
         public T FindAccount(int id, out int index)
         {
             for (int i = 0; i < accounts.Length; i++)
